@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: manage-order-application
+  profiles:
+    active: dev
+server:
+  servlet:
+    context-path: /api
+  port: 8082
+
+---
+
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:h2:mem:localdb
+    driver-class-name: org.h2.Driver
+    username: dev
+    password: 1234
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+shipping-service:
+  url: http://localhost:8083/api      
+---
+
+spring:
+  profiles: prod 
+  datasource:
+    url: jdbc:mysql://${HOST_DB}:${PORT_DB}/${DB_NAME}
+    username: ${USER_NAME_DB}
+    password: ${PASSWORD_DB}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+shipping-service:
+  url: http://shipping-service:8083/api     
+       
